@@ -8,17 +8,24 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/node:7.10
+  deploy:
+    docker:
+      - image: buildpack-deps:trusty
+    steps:
+      - checkout
+      - run:
+          name: Deploy Master to Heroku
+          command: |
+            git push https://heroku:fda7a46c-24ce-4c83-adea-1bdd57035370@git.heroku.com/circleci-v2.git master
 
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
 
     working_directory: ~/repo
 
     steps:
       - checkout
-
+      - heroku/install
+      - heroku/deploy-via-git: # Deploys branch to Heroku via git push.
+          only-branch: master # If you specify an only-branch, the deploy will no
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -26,7 +33,6 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: npm install
 
       - save_cache:
           paths:
@@ -34,4 +40,3 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # run tests!
-      - run: npm test
