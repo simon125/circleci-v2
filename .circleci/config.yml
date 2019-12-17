@@ -1,38 +1,14 @@
-# Javascript Node CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-javascript/ for more details
-#
 version: 2
 jobs:
-  deploy:
+  build:
     docker:
-      - image: buildpack-deps:trusty
+      - image: circleci/node:8
     steps:
-      - checkout
-      - run:
-          name: Deploy Master to Heroku
-          command: |
-            git push https://heroku:fda7a46c-24ce-4c83-adea-1bdd57035370@git.heroku.com/circleci-v2.git master
-
-
-    working_directory: ~/repo
-
+       - checkout
+       - run: echo "A first hello1"
+       build:
+    docker:
+      - image: circleci/node:8
     steps:
-      - checkout
-      - heroku/install
-      - heroku/deploy-via-git: # Deploys branch to Heroku via git push.
-          only-branch: master # If you specify an only-branch, the deploy will no
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-
-
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-
-      # run tests!
+       - checkout
+       - run: echo "A first hello2"
