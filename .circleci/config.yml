@@ -9,5 +9,5 @@ jobs:
           name: Setup Dependencies
           command: npm install
       - run:
-          name: Run tests
+          name: Run tests szymon
           command: npm run test
