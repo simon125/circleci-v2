@@ -22,7 +22,7 @@ jobs:
       #       git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
       - run:
           name: Create app
-          command: heroku create -b https://github.com/mars/create-react-app-buildpack.git
+          command: heroku create -b https://github.com/simon125/circleci-v2.git
       - run:
           name: step 1
           command: git add .
@@ -31,7 +31,7 @@ jobs:
           command: git commit -m "react-create-app on Heroku"
       - run:
           name: step 3
-          command: git push heroku master
+          command: git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
       # - run:
       #     name: step 4
       #     command: git
