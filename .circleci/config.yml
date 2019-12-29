@@ -47,12 +47,10 @@
 #       - build
 #       - deploy
 
-
-
 version: 2
 jobs:
   build:
-   docker:
+    docker:
       - image: circleci/node:8
     steps:
       - checkout
