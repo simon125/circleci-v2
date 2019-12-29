@@ -1,7 +1,58 @@
-version: 2
+# version: 2
+# jobs:
+#   build:
+#     docker:
+#       - image: circleci/node:8
+#     steps:
+#       - checkout
+#       - run:
+#           name: Setup Dependencies
+#           command: npm install
+#       - run:
+#           name: Run tests szymon
+#           command: npm run test
+#   deploy:
+#     docker:
+#       - image: circleci/buildpack-deps:trusty
+#     steps:
+#       - checkout
+#       # - run:
+#       #     name: Deploy app on heroku
+#       #     command: |
+#       #       git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+#       - run:
+#           name: Create app
+#           command: heroku create -b https://github.com/simon125/circleci-v2.git
+#       - run:
+#           name: step 1
+#           command: git add .
+#       - run:
+#           name: step 2
+#           command: git commit -m "react-create-app on Heroku"
+#       - run:
+#           name: step 3
+#           command: git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+#       # - run:
+#       #     name: step 4
+#       #     command: git
+# # heroku create -b https://github.com/mars/create-react-app-buildpack.git
+# # git add .
+# # git commit -m "react-create-app on Heroku"
+# # git push heroku master
+# # heroku open
+# workflows:
+#   version: 2
+#   build-deploy:
+#     jobs:
+#       - build
+#       - deploy
+
+
+
+      version: 2
 jobs:
   build:
-    docker:
+   docker:
       - image: circleci/node:8
     steps:
       - checkout
@@ -13,36 +64,22 @@ jobs:
           command: npm run test
   deploy:
     docker:
-      - image: circleci/buildpack-deps:trusty
+      - image: buildpack-deps:trusty
     steps:
       - checkout
-      # - run:
-      #     name: Deploy app on heroku
-      #     command: |
-      #       git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
       - run:
-          name: Create app
-          command: heroku create -b https://github.com/simon125/circleci-v2.git
-      - run:
-          name: step 1
-          command: git add .
-      - run:
-          name: step 2
-          command: git commit -m "react-create-app on Heroku"
-      - run:
-          name: step 3
-          command: git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
-      # - run:
-      #     name: step 4
-      #     command: git
-# heroku create -b https://github.com/mars/create-react-app-buildpack.git
-# git add .
-# git commit -m "react-create-app on Heroku"
-# git push heroku master
-# heroku open
+          name: Deploy Master to Heroku
+          command: |
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+
 workflows:
   version: 2
   build-deploy:
     jobs:
       - build
-      - deploy
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
